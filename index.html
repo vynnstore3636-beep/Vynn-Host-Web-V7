@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VynnHost Pro | Cyber Station</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        :root {
+
+            --cyan: #00f2fe; --magenta: #ff00ff; --red: #ff003c; --bg: #010103;
+
+        }
+
+        body {
+
+            background: var(--bg); color: white; font-family: 'Orbitron', sans-serif;
+
+            margin: 0; display: flex; justify-content: center; padding: 20px 15px;
+
+            overflow-x: hidden;
+
+        }
+
+        /* SCANLINE EFFECT */
+
+        body::before {
+
+            content: " "; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+
+            z-index: 100; background-size: 100% 4px, 3px 100%; pointer-events: none;
+
+        }
+
+        #stars-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+        .container { width: 100%; max-width: 420px; text-align: center; z-index: 10; }
+
+        /* HEADER GLITCH */
+
+        .glitch {
+
+            font-size: 26px; font-weight: bold; text-transform: uppercase;
+
+            position: relative; text-shadow: 0.05em 0 0 var(--cyan), -0.025em -0.05em 0 var(--magenta), 0.025em 0.05em 0 var(--red);
+
+            animation: glitch 1s infinite;
+
+        }
+
+        @keyframes glitch {
+
+            0% { text-shadow: 0.05em 0 0 var(--cyan), -0.05em -0.025em 0 var(--magenta); }
+
+            14% { text-shadow: 0.05em 0 0 var(--cyan), -0.05em -0.025em 0 var(--magenta); }
+
+            15% { text-shadow: -0.05em -0.025em 0 var(--cyan), 0.025em 0.025em 0 var(--magenta); }
+
+            100% { text-shadow: -0.025em 0 0 var(--cyan), -0.025em -0.025em 0 var(--magenta); }
+
+        }
+
+        .avatar {
+
+            width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 15px;
+
+            border: 2px solid var(--cyan); box-shadow: 0 0 20px var(--cyan);
+
+            background: url('https://files.catbox.moe/stoodt.jpg') center/cover;
+
+            animation: float 3s ease-in-out infinite;
+
+        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* RUNNING TEXT */
+
+        .marquee-box {
+
+            background: rgba(0, 242, 254, 0.1); border: 1px solid var(--cyan);
+
+            margin: 15px 0; padding: 5px; font-size: 10px; color: var(--cyan);
+
+            overflow: hidden; white-space: nowrap;
+
+        }
+
+        .marquee-text { display: inline-block; animation: scroll 15s linear infinite; }
+
+        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* BUTTONS */
+
+        .music-btn {
+
+            background: none; border: 1px solid var(--magenta); color: var(--magenta);
+
+            padding: 8px 20px; border-radius: 5px; cursor: pointer; font-size: 11px;
+
+            margin-bottom: 30px; transition: 0.3s;
+
+        }
+
+        .music-btn:hover { background: var(--magenta); color: white; box-shadow: 0 0 20px var(--magenta); }
+
+        .label { font-size: 10px; color: var(--cyan); text-align: left; margin: 25px 0 10px 5px; letter-spacing: 4px; }
+
+        .card {
+
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 242, 254, 0.15);
+
+            padding: 18px; margin-bottom: 12px; border-radius: 10px;
+
+            display: flex; align-items: center; text-decoration: none; color: white;
+
+            transition: 0.3s; position: relative;
+
+        }
+
+        .card:hover { border-color: var(--cyan); background: rgba(0, 242, 254, 0.05); transform: translateX(5px); }
+
+        .card i { font-size: 20px; width: 40px; color: var(--cyan); }
+
+        .card span { flex: 1; text-align: left; font-size: 14px; }
+
+        .promo { border: 1px solid var(--red) !important; overflow: hidden; }
+
+        .promo::after {
+
+            content: 'HOT'; position: absolute; top: 5px; right: -20px;
+
+            background: var(--red); font-size: 8px; padding: 2px 20px; transform: rotate(45deg);
+
+        }
+
+        .price { color: var(--red); font-weight: bold; font-size: 13px; }
+
+        .footer { margin-top: 50px; font-size: 9px; color: #333; letter-spacing: 3px; }
+
+    </style>
+
+</head>
+
+<body>
+
+    <canvas id="stars-canvas"></canvas>
+
+    <audio id="bgm" loop><source src="https://files.catbox.moe/ul1rh5.mp3" type="audio/mpeg"></audio>
+
+    <div class="container">
+
+        <div class="avatar"></div>
+
+        <div class="glitch">VYNNHOST PRO</div>
+
+        <p style="font-size:10px; color:#666; margin-top:5px;">SECURE CONNECTION ESTABLISHED</p>
+
+        <div class="marquee-box">
+
+            <div class="marquee-text">
+
+                STOK PTERODACTYL READY • DISKON 50% UNTUK RESELLER BARU • SISTEM MONITORING VPS AKTIF • VYNNHOST PRO TERPERCAYA SEJAK 2024
+
+            </div>
+
+        </div>
+
+        <button class="music-btn" onclick="toggleM()">
+
+            <i class="fa-solid fa-satellite-dish"></i> <span id="mText">SYNC AUDIO</span>
+
+        </button>
+
+        <div class="label">SPECIAL OFFERS</div>
+
+        <a href="https://wa.me/6285134770776?text=Order+Promo" class="card promo">
+
+            <i class="fa-solid fa-fire"></i>
+
+            <span>Ptero Panel 2GB</span>
+
+            <div class="price">Rp 1.500</div>
+
+        </a>
+
+        <div class="label">INFRASTRUCTURE</div>
+
+        <a href="https://wa.me/6285134770776" class="card"><i class="fa-solid fa-microchip"></i><span>Cloud VPS Ubuntu</span></a>
+
+        <a href="https://wa.me/6285134770776" class="card"><i class="fa-solid fa-code-merge"></i><span>Script Bot WhatsApp</span></a>
+
+        <div class="label">CONTACT</div>
+
+        <a href="https://wa.me/6285134770776" class="card"><i class="fa-brands fa-whatsapp"></i><span>Admin WhatsApp</span></a>
+
+        <a href="https://t.me/VynnHost" class="card"><i class="fa-brands fa-telegram"></i><span>Telegram Channel</span></a>
+
+        <div class="footer">
+
+            TRANSMISSION OK // SYSTEM V.0.3.6<br>
+
+            © 2026 VYNNHOST LABORATORIES
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function toggleM() {
+
+            var a = document.getElementById("bgm");
+
+            var t = document.getElementById("mText");
+
+            if (a.paused) { a.play(); t.innerHTML = "AUDIO CONNECTED 😈"; }
+
+            else { a.pause(); t.innerHTML = "AUDIO DISCONNECTED"; }
+
+        }
+
+        // Starfield Animation
+
+        const canvas = document.getElementById('stars-canvas');
+
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+
+        let stars = [];
+
+        for(let i=0; i<150; i++) stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*2, spd: Math.random()*0.5});
+
+        function draw() {
+
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            ctx.fillStyle = "white";
+
+            stars.forEach(st => {
+
+                ctx.beginPath(); ctx.arc(st.x, st.y, st.size, 0, Math.PI*2); ctx.fill();
+
+                st.y += st.spd; if(st.y > canvas.height) st.y = 0;
+
+            });
+
+            requestAnimationFrame(draw);
+
+        }
+
+        draw();
+
+    </script>
+
+</body>
+
+</html>
